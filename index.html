@@ -1,1 +1,46 @@
-
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Operaciones Aritmeticas</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/estilos.css">
+        <script src="js/libs/bignumber.js/bignumber.min.js"></script>
+        <script src="js/libs/numeral.js/numeral.min.js"></script>
+    </head>
+    <body>
+        <header>
+            <h1>Operaciones </h1>
+         </header>
+        <form id="forma" action="javascript:procesa()">
+            <p><em>El borde azul indica obligatorio.</em></p>
+            <p>
+                <label>
+                    Numero 1<br>
+                    <input name="N1" type="text" autofocus required onkeypress='return validarNumeros(event)'>
+                </label>
+                <br><em>Ingrese un numero</em>
+                <br><output id="s1"></output>
+            </p>
+            <p>
+                <label>
+                    Numero 2<br>
+                    <input name="N2" type="text" autofocus required onkeypress='return validarNumeros(event)'>
+                </label>
+                <br>
+                <em> Por favor ingrese el siguiente numero</em>
+                 <br><output id="s2"></output>
+            </p>
+            <p>
+                <input type="submit" value="Procesar" accesskey="P">
+            </p>
+            <p>
+                <output name="resultado" id="resultado"></output>
+            </p>
+        </form>
+    <footer>
+        Copyright 2021 Pérez Hernández Denise Adriana
+    </footer>
+ <script src="js/CtrlOperaciones.js"></script>        
+    </body>
+</html>
