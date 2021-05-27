@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Operaciones Aritmeticas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/estilos.css">
+    <script src="js/libs/bignumber.js/bignumber.min.js"></script>
+    <script src="js/libs/numeral.js/numeral.min.js"></script>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-analytics.js"></script>
+    <script src="js/CtrlOperaciones.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyDbBtsPnvQvhiSstYg3ap8naIrFLmXfSMk",
+            authDomain: "tareaweb2-45601.firebaseapp.com",
+            projectId: "tareaweb2-45601",
+            storageBucket: "tareaweb2-45601.appspot.com",
+            messagingSenderId: "807799920982",
+            appId: "1:807799920982:web:81b61ef498a90666029ef7",
+            measurementId: "G-HMXY0K1C8C"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+</head>
+
+<body>
+    <h1>Sesión</h1>
+    <fieldset>
+        <legend>Email</legend>
+        <output id="email"><progress max="100">Cargando…</progress></output>
+    </fieldset>
+    <fieldset>
+        <legend>Nombre</legend>
+        <output id="nombre"></output>
+    </fieldset>
+    <figure><img id="avatar" alt="Avatar"></figure>
+    <button type="button" onclick="terminaSesión()">Terminar Sesión</button>
+    <header>
+        <h1>Operaciones </h1>
+    </header>
+    <form id="forma" action="javascript:procesa()">
+        <p><em>El borde azul indica obligatorio.</em></p>
+        <p>
+            <label>
+                    Numero 1<br>
+                    <input name="N1" type="text" autofocus required onkeypress='return validarNumeros(event)'>
+                </label>
+            <br><em>Ingrese un numero</em>
+            <br><output id="s1"></output>
+        </p>
+        <p>
+            <label>
+                    Numero 2<br>
+                    <input name="N2" type="text" autofocus required onkeypress='return validarNumeros(event)'>
+                </label>
+            <br>
+            <em> Por favor ingrese el siguiente numero</em>
+            <br><output id="s2"></output>
+        </p>
+        <p>
+            <input type="submit" value="Procesar" accesskey="P">
+        </p>
+        <p>
+            <output name="resultado" id="resultado"></output>
+        </p>
+    </form>
+    <footer>
+        Copyright 2021 Pérez Hernández Denise Adriana
+    </footer>
+
+    <script>
+        //@ts-check
+        /** Conexión al sistema de autenticación de Firebase. */
+        // @ts-ignore
+        const auth = firebase.auth();
+        /** Tipo de autenticación de usuarios. En este caso es con Google. */
+        // @ts-ignore
+        const provider = new firebase.auth.GoogleAuthProvider();
+        /* Configura el proveedor de Google para que permita seleccionar de una
+         * lista. */
+        provider.setCustomParameters({
+            prompt: "select_account"
+        });
+        /* Recibe una función que se invoca cada que hay un cambio en la
+         * autenticación y recibe el modelo con las características del usuario.*/
+        auth.onAuthStateChanged(
+            /** Recibe las características del usuario o null si no ha iniciado
+             * sesión. */
+            usuarioAuth => {
+                if (usuarioAuth && usuarioAuth.email) {
+                    // Usuario aceptado.
+                    // @ts-ignore Muestra el email registrado en Google.
+                    email.value = usuarioAuth.email;
+                    // @ts-ignore Muestra el nombre registrado en Google.
+                    nombre.value = usuarioAuth.displayName;
+                    // @ts-ignore Muestra el avatar registrado en Google.
+                    avatar.src = usuarioAuth.photoURL;
+                } else {
+                    // No ha iniciado sesión. Pide datos para iniciar sesión.
+                    auth.signInWithRedirect(provider);
+                }
+            },
+            // Función que se invoca si hay un error al verificar el usuario. //
+            procesaError
+        );
+        /** Termina la sesión. */
+        async function terminaSesión() {
+            try {
+                await auth.signOut();
+            } catch (e) {
+                procesaError(e);
+            }
+        }
+        /** Procesa un error. Muestra el objeto en la consola y un cuadro de
+         * alerta con el mensaje.
+         * @param {Error} e descripción del error. */
+        function procesaError(e) {
+            console.log(e);
+            alert(e.message);
+        }
+    </script>
+</body>
+
+</html>
